@@ -12,20 +12,69 @@
     </head>
     <body>
         <?php require_once 'process.php'?>
-        <div class="row justify-content-center">
-            <form action="process.php" method="post">
-                <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" name="title"  class="form-control"value="Enter task title">
-                </div>
-                <div class="form-group">
-                    <label for="status">Status</label>
-                    <input type="text" name="status" class="form-control" value="Enter task status">
-                </div>
-                <div class="form-group">
-                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                </div> 
-            </form>
+
+        <!-- display session messages -->
+        <?php
+            if(isset($_SESSION['message'])):?>
+            <div class="alert alert-<?=$_SESSION['msg_type'];?>">
+                <?php
+                    echo $_SESSION['message'];
+                    unset($_SESSION['message']);
+                ?>
+            </div>
+        <?php endif ?>
+        <div class="container">
+            <?php
+            
+            //    display all tasks
+            include 'db.php'; 
+            $result = $mysqli->query("SELECT * FROM todos") or die($mysqli->error);
+            //    pre_r($result->fetch_assoc());
+            ?>
+            <div class="row justify-content-center">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Status</th>
+                            <th colspan="2">Action</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    while($row = $result->fetch_assoc()):?>
+                    <tr>
+                        <td><?php echo $row['title']; ?></td>
+                        <td><?php echo $row['status']; ?></td>
+                        <td>
+                            <a href="index.php?edit=<?= $row['id']; ?>" class="btn btn-info">Edit</a>
+                            <a href="process.php?delete=<?= $row['id']; ?>" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </table>
+            </div>
+                <!-- pre_r($result);
+                function pre_r($array){
+                    echo '<pre>';
+                    print_r($array);
+                    echo '</pre>';
+                }
+                ?> -->
+            <div class="row justify-content-center">
+                <form action="process.php" method="post">
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="title"  class="form-control" placeholder="Enter task title">
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <input type="text" name="status" class="form-control"  placeholder="Enter task status">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                    </div> 
+                </form>
+            </div>
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
