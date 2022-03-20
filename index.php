@@ -62,17 +62,25 @@
                 ?> -->
             <div class="row justify-content-center">
                 <form action="process.php" method="post">
+                    <input type="hidden" name="id" value="<?= $id; ?>">
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" name="title"  class="form-control" placeholder="Enter task title">
+                        <input type="text" name="title" class="form-control" value="<?=$title;?>" placeholder="Enter task title">
                     </div>
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <input type="text" name="status" class="form-control"  placeholder="Enter task status">
+                        <input type="text" name="status" class="form-control" value="<?=$status;?>"  placeholder="Enter task status">
                     </div>
-                    <div class="form-group">
-                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-                    </div> 
+                    <?php 
+                        if($update == true):?>
+                            <div class="form-group">
+                                <button type="submit" name="update" class="btn btn-info">Update</button>
+                            </div> 
+                        <?php else: ?>
+                            <div class="form-group">
+                                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                            </div> 
+                        <?php endif ?>
                 </form>
             </div>
         </div>
